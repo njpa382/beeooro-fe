@@ -1,0 +1,28 @@
+{
+  "name": "beeooro-call-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/",
+    "dev": "nodemon src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leandroecabello/beeooro-call-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leandroecabello/beeooro-call-be/issues"
+  },
+  "homepage": "https://github.com/leandroecabello/beeooro-call-be#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "twilio": "^3.54.0"
+  }
+}

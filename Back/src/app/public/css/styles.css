@@ -1,0 +1,54 @@
+#video-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#content-video {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+video {
+    height: 300px;
+    width: 400px;
+    object-fit: cover;
+}
+
+#list ul {
+    list-style: none;
+}
+
+#list ul li {
+    font-family: Georgia, serif, Times;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    width: 400px;
+    height: 50px;
+    background-color: #333;
+    border-left: 5px solid #222;
+    border-right: 5px solid #222;
+    padding-left: 10px;
+    text-decoration: none;
+    color: #bfe1f1;
+}
+
+#list ul li button {
+    margin-left: 20px;
+}
+
+#endCall {
+    width: 10%;
+    padding: 5px;
+    margin: 10px;
+}
+
+.active {
+    display: block;
+}
+
+.inactive {
+    display: none;
+}

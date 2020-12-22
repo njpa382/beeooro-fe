@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Whit Pusher and Webrtc</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/styles.css">
+    <!-- Biblioteca Pusher -->
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+</head>
+
+<body>
+    <div id="video-grid">
+        <div id="content-video">
+            <video id="myVideo"></video>
+        </div>
+        <div id="list">
+            <ul id="users">
+
+            </ul>
+        </div>
+        <button id="endCall" class="inactive" onclick="endCurrentCall()">End Call</button>
+    </div>
+
+    <script src="./js/index.js"></script>
+    <script src="./js/pusher-config.js"></script>
+    <script src="./js/webrtc-config.js"></script>
+</body>
+
+</html>
