@@ -32,9 +32,9 @@ const Twilio = {
     return access;
   },
 
-  roomCreate: async (req, res) => {
+  roomCreate: async roomName => {
     return await client.video.rooms.create({
-      uniqueName: req.body.uniqueName,
+      uniqueName: roomName,
     });
   },
 };
