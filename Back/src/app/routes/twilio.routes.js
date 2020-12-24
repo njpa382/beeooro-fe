@@ -1,9 +1,7 @@
-const { Router } = require("express");
-const TwilioController = require("../controllers/twilio.controller");
+const { Router } = require('express');
+const { getToken, addRoom } = require('../controllers/twilio.controller');
 const router = Router();
 
-router
-  .get("/token", TwilioController.getToken)
-  .post("/addRoom", TwilioController.addRoom);
+router.get('/token', getToken).post('/addRoom', addRoom);
 
 module.exports = router;
