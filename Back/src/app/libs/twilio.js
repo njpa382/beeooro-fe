@@ -1,7 +1,8 @@
-const { TWILIO } = require("../../config/config");
-const client = require("twilio")(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
-const AccessToken = require("twilio").jwt.AccessToken;
+const { TWILIO, VARIABLES } = require('../../config/config');
+const client = require('twilio')(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
+const AccessToken = require('twilio').jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
+const { IDENTITY_NAME, ROOM_NAME } = VARIABLES;
 
 // Create an Access Token
 const accessToken = new AccessToken(
@@ -10,37 +11,32 @@ const accessToken = new AccessToken(
   TWILIO.KEY_SECRET
 );
 
-const Twilio = {};
+const Twilio = {
+  tokenGenerate: () => {
+    // Set the Identity of this token
+    accessToken.identity = IDENTITY_NAME;
+    const identity = accessToken.identity;
+    // Grant access to Video
+    const grant = new VideoGrant();
+    grant.room = ROOM_NAME;
+    const room = grant.room;
+    // Serialize the token as a JWT
+    const jwt = accessToken.toJwt();
 
-Twilio.tokenGenerate = (req, res) => {
-  // Set the Identity of this token
-  accessToken.identity = "beeooro-user";
+    const access = {
+      identity,
+      room,
+      token: jwt,
+    };
 
-  // Grant access to Video
-  const grant = new VideoGrant();
-  grant.room = "beeooro room";
-  accessToken.addGrant(grant);
-  console.log(grant);
-  console.log(accessToken);
+    return access;
+  },
 
-  // Serialize the token as a JWT
-  const jwt = accessToken.toJwt();
-  console.log(jwt);
-
-  res.status(200).json({ token: jwt });
-};
-
-Twilio.roomCreate = async (req, res) => {
-  try {
-    const room = await client.video.rooms.create({
+  roomCreate: async (req, res) => {
+    return await client.video.rooms.create({
       uniqueName: req.body.uniqueName,
     });
-    console.log(room);
-    res.status(201).json({ room });
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ error });
-  }
+  },
 };
 
 module.exports = Twilio;
