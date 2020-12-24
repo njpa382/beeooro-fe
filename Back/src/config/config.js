@@ -7,6 +7,11 @@ const config = {
     KEY_SID: process.env.TWILIO_API_KEY_SID,
     KEY_SECRET: process.env.TWILIO_API_KEY_SECRET,
   },
+
+  VARIABLES: {
+    IDENTITY_NAME: 'beeooro-user',
+    ROOM_NAME: 'beeooro-room',
+  },
 };
 
 module.exports = config;
