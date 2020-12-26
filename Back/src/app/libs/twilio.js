@@ -1,31 +1,25 @@
 const { TWILIO, VARIABLES } = require('../../config/config');
-const client = require('twilio')(TWILIO.ACCOUNT_SID, TWILIO.AUTH_TOKEN);
+const { ACCOUNT_SID, AUTH_TOKEN, KEY_SID, KEY_SECRET } = TWILIO;
+const { IDENTITY_NAME } = VARIABLES;
+const client = require('twilio')(ACCOUNT_SID, AUTH_TOKEN);
 const AccessToken = require('twilio').jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
-const { IDENTITY_NAME, ROOM_NAME } = VARIABLES;
-
-// Create an Access Token
-const accessToken = new AccessToken(
-  TWILIO.ACCOUNT_SID,
-  TWILIO.KEY_SID,
-  TWILIO.KEY_SECRET
-);
 
 const Twilio = {
   tokenGenerate: () => {
-    // Set the Identity of this token
-    accessToken.identity = IDENTITY_NAME;
-    const identity = accessToken.identity;
+    // Create an Access Token
+    const accessToken = new AccessToken(ACCOUNT_SID, KEY_SID, KEY_SECRET, {
+      identity: IDENTITY_NAME,
+    });
     // Grant access to Video
-    const grant = new VideoGrant();
-    grant.room = ROOM_NAME;
-    const room = grant.room;
+    const grant = new VideoGrant({
+      room: '',
+    });
+    accessToken.addGrant(grant);
     // Serialize the token as a JWT
     const jwt = accessToken.toJwt();
 
     const access = {
-      identity,
-      room,
       token: jwt,
     };
 
