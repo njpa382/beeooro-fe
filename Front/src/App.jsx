@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import axios from 'axios';
-import { connect } from 'twilio-video';
+import { connect, createLocalVideoTrack } from 'twilio-video';
 
 function App() {
 
@@ -8,42 +8,58 @@ function App() {
   const [room, setRoom] = useState('')
 
   useEffect(() => {
-     getData()
+    getData()
   }, [])
 
   const getData = async () => {
     const res = await axios.get('http://localhost:4000/api/v1/twilio/token')
     const data = res.data.token 
-    console.log(res.data.token)
-
     setToken(data)
   }
 
   const handleChange = (e) => {
-    // const { name, value } = e.target
     setRoom( e.target.value )
   }
 
-  const addRoom = async () => {
+  const addRoom = async (e) => {
+    e.preventDefault()
     const newRoom = {
       uniqueName: room
+    } 
+
+    try {
+      await axios.post('http://localhost:4000/api/v1/twilio/addRoom', newRoom)    
+    } catch (error) {
+      console.log(error, 'room name exist')
     }
-     
-    await axios.post('http://localhost:4000/api/v1/twilio/addRoom', newRoom)
-    
+
     setRoom('')
   } 
 
-  const joinRoom = (e) => {
+  const joinRoom = async (e) => {
     e.preventDefault()
-    console.log(token.token)
     const TOKEN = token.token
-    connect(TOKEN, { name: 'room test' }).then(room => {
-      /* Reviar Unable to connect to Room: Invalid Access Token grants */
-      console.log(`Successfully joined a Room: ${room}`);
-      /* room.on('participantConnected', participant => {
+    console.log(TOKEN)
+    
+    connect(TOKEN, { name: room }).then(room => {
+      console.log(`Successfully joined a Room: ${room.name}`)
+      const videoChat = document.getElementById('video-chat');
+
+      createLocalVideoTrack().then(track => {
+          videoChat.appendChild(track.attach());
+      });
+      room.on('participantConnected', participant => {
         console.log(`A remote Participant connected: ${participant}`);
-      }); */
+        participant.tracks.forEach(publication => {
+          if (publication.isSubscribed) {
+            const track = publication.track
+            videoChat.appendChild(track.attach())
+          }
+        })
+        participant.on('trackSubscribed', track => {
+          videoChat.appendChild(track.attach());
+        });
+      })  
     }, error => {
       console.error(`Unable to connect to Room: ${error.message}`);
     });
@@ -76,6 +92,7 @@ function App() {
          Join Room
        </button>
        </form>
+       <div id="video-chat"/>
     </div>
   )
 }
