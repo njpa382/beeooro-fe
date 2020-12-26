@@ -11,9 +11,10 @@ const TwilioController = {
   },
 
   addRoom: async (req, res) => {
+    const { uniqueName } = req.body;
     try {
-      const { uniqueName } = req.body;
       const room = await roomCreate(uniqueName);
+      console.log(room);
       res.status(201).json({ room });
     } catch (err) {
       res.status(400).json({
