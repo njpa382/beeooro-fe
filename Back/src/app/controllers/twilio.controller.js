@@ -2,8 +2,9 @@ const { tokenGenerate, roomCreate } = require('../libs/twilio');
 
 const TwilioController = {
   getToken: async (req, res) => {
+    const { identity, roomName } = req.query;
     try {
-      const token = tokenGenerate();
+      const token = tokenGenerate(identity, roomName);
       res.status(200).json({ token });
     } catch (err) {
       res.status(500).json({ message: 'Internal Server Error', error: err });
