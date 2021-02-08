@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 import axios from 'axios';
 import { connect, createLocalVideoTrack } from 'twilio-video';
+import Header from './components/Header'
+import Main from './components/Main'
 
 function App() {
 
@@ -66,7 +68,9 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App">  
+      <Header/>
+      <Main/>
        <h1>Beeooro</h1>
        <form onSubmit={addRoom}>
          <input 
